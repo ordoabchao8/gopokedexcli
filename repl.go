@@ -11,7 +11,7 @@ import (
 type cliCommand struct {
 	name string
 	description string
-	callback func(*config) error
+	callback func(*config, string) error
 }
 
 type config struct {
@@ -41,7 +41,13 @@ func startRepl(config *config) {
 			continue
 		}
 		firstWord := word[0]
-		
+		var areaName string
+		if len(word) > 1 {
+			areaName = word[1]
+		} else {
+			areaName = ""
+		}
+	
 		commands := getCommands()
 		command, ok := commands[firstWord]
 		if !ok {
@@ -49,29 +55,12 @@ func startRepl(config *config) {
 			continue
 		}
 		
-		err := command.callback(config)
+		err := command.callback(config, areaName)
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
 }
-
-func commandExit(config *config) error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	
-	return nil
-}
-
-func commandHelp(config *config) error {
-	fmt.Print("Welcome to the Pokedex!\nUsage:\n\n")
-	validCommands := getCommands()
-	for _, value := range validCommands {
-		fmt.Printf("%s: %s\n", value.name, value.description)
-	}
-	return nil
-}
-
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
@@ -94,6 +83,11 @@ func getCommands() map[string]cliCommand {
 			name: "mapb",
 			description: "Displays the names of the previous 20 location areas",
 			callback: commandMapb,
+		},
+		"explore": {
+			name: "explore",
+			description: "Displays the names of pokemon encounters within a given location",
+			callback: commandExplore,
 		},
 	}
 }

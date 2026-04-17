@@ -5,23 +5,20 @@ import (
 	"errors"
 )
 
-func commandMapf(cfg *config) error {
+func commandMapf(cfg *config, areaName string) error {
     locationsResp, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
     if err != nil {
         return err
     }
     cfg.nextLocationsURL = locationsResp.Next
     cfg.prevLocationsURL = locationsResp.Previous
-	if cfg.prevLocationsURL == nil {
-		return errors.New("You are on the first page")
-	}
     for _, loc := range locationsResp.Results {
         fmt.Println(loc.Name)
     }
     return nil
 }
 
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, areaName string) error {
 	if cfg.prevLocationsURL == nil {
 		return errors.New("You are on the first page")
 	}

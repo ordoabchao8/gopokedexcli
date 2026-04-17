@@ -40,8 +40,10 @@ func TestCleanInput(t *testing.T) {
 			word := actual[i]
 			expectedWord := c.expected[i]
 			if word != expectedWord {
-				t.Errorf("found characters that do not match between input string and expected, try again")
+				t.Errorf("found characters that do not match between input string and expected output, try again")
 			}
 		}
 	}
 }
+
+
