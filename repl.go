@@ -18,6 +18,7 @@ type config struct {
     pokeapiClient    pokeapi.Client
     nextLocationsURL *string
     prevLocationsURL *string
+	pokeDex			 map[string]pokeapi.RespPokemonDetails
 }
 
 func cleanInput(text string) []string {
@@ -88,6 +89,21 @@ func getCommands() map[string]cliCommand {
 			name: "explore",
 			description: "Displays the names of pokemon encounters within a given location",
 			callback: commandExplore,
+		},
+		"catch": {
+			name: "catch",
+			description: "Attempt to catch a Pokemon, Usage: 'catch pikachi'",
+			callback: commandCatch,
+		},
+		"inspect": {
+			name: "inspect",
+			description: "Inspect any pokemon currently in your Pokedex, Usage: 'inspect pikachu'",
+			callback: commandInspect,
+		},
+		"pokedex": {
+			name: "pokedex",
+			description: "Inspect any pokemon currently in your Pokedex, Usage: 'inspect pikachu'",
+			callback: commandPokedex,
 		},
 	}
 }
